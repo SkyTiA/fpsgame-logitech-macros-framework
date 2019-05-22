@@ -212,19 +212,22 @@ end
 
 function _OnEvent(event,arg)
     EnablePrimaryMouseButtonEvents(true)
-    if event == "MOUSE_BUTTON_PRESSED" and config.keyBindings[arg] ~= nil then
+    if event == "MOUSE_BUTTON_PRESSED" and config.keyBindings[arg] then
         if config.keyBindings[arg] == "clear" then
             config.currentWeapon = nil
         else
             config.currentWeapon = config.keyBindings[arg]
         end
     end
-    if event == "MOUSE_BUTTON_PRESSED" and arg == 1 and config.currentWeapon ~= nil then
+    if event == "MOUSE_BUTTON_PRESSED" and arg == 1 and config.currentWeapon then
         config.task = NewTask(config.currentWeapon.onWeapon)
         config.task.Start()
     end
 
-    if event == "MOUSE_BUTTON_RELEASED" and arg == 1 and config.currentWeapon ~= nil then
+    if event == "MOUSE_BUTTON_RELEASED" and arg == 1 and config.currentWeapon then
+        if  config.currentWeapon.onExit then
+            config.currentWeapon.onExit()
+        end
         config.task.Destroy()
     end
 end
@@ -240,5 +243,18 @@ function makeInexactWeapon(step)
     return weap
 end
 
+autoClicker = {}
+autoClicker.onWeapon = function ()
+    while true do
+        PressMouseButton(1)
+        TaskSleep(30)
+        ReleaseMouseButton(1)
+        TaskSleep(20)
+    end
+end
+
+autoClicker.onExit = function ()
+    ReleaseMouseButton(1)
+end
 
 

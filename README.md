@@ -91,4 +91,8 @@ step为自然数，创建一个武器，压枪方式为每10ms向屏幕下方移
 bindKey(4,makeInexactWeapon(3))
 ```
 
+新增自动连点器autoClicker,用法：
+```
+bindKey(4,autoClicker)
+```
 
